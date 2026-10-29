@@ -42,8 +42,8 @@ FILTER_DEFAULTS = {
     "title_keywords": [],
     "exclude_keywords": [],
     "location_keywords": [],
-    "max_age_days": 14,
-    "max_per_run": 40,
+    "max_age_days": 2,
+    "max_per_run": 100,
     "only_in_readme": True,
 }
 
