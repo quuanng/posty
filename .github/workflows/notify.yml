@@ -1,0 +1,62 @@
+name: Internship notifier
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"   # every 15 min (GitHub may delay runs a few minutes)
+  workflow_dispatch:          # lets you click "Run workflow" manually
+    inputs:
+      test:
+        description: "Just send a test message to Discord"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write             # needed to commit state.json back to the repo
+
+concurrency:
+  group: notifier             # never let two runs overlap
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+
+      # ---------- your filters (comma-separated, case-insensitive) ----------
+      TERMS: "Summer 2027"            # blank = any term (incl. off-season)
+      CATEGORIES: ""                  # e.g. "software,ai,quant"; blank = all
+      TITLE_KEYWORDS: ""              # e.g. "software,machine learning,data"
+      EXCLUDE_KEYWORDS: ""            # e.g. "phd,mba,sales"
+      LOCATION_KEYWORDS: ""           # e.g. "remote,ny,seattle,ca"
+      HIDE_NO_SPONSORSHIP: "false"    # "true" to skip no-sponsorship / citizenship-only roles
+      MAX_AGE_DAYS: "14"
+      MAX_PER_RUN: "40"
+      # ----------------------------------------------------------------------
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Send test message
+        if: ${{ inputs.test }}
+        run: python notifier.py --test
+
+      - name: Check for new listings
+        if: ${{ !inputs.test }}
+        run: python notifier.py
+
+      - name: Save state
+        if: ${{ !inputs.test }}
+        run: |
+          if [[ -n "$(git status --porcelain state.json)" ]]; then
+            git config user.name  "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add state.json
+            git commit -m "Update seen listings" --quiet
+            git push --quiet
+          fi
