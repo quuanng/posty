@@ -1,0 +1,56 @@
+# ============================================================================
+#  Internship notifier settings. Edit this file on GitHub, commit, and you're done.
+#  Lists use ["a", "b"] syntax. Matching is case-insensitive. Short keywords
+#  (3 letters or fewer, like "ny" or "ai") must match a whole word.
+# ============================================================================
+
+# ---- Filters that apply to every feed (a feed below can override any of them)
+
+only_in_readme = true         # notify only for roles actually shown in the repo's README
+                              # (what you see on GitHub). false = everything in Simplify's
+                              # data file, which has ~5x more new-grad roles (less curated)
+                              # and internship roles with no season tagged.
+us_only = true                # keep a role only if at least one location is in the US
+                              # (or plain "Remote"). Drops UK/Canada/Europe/etc.
+hide_no_sponsorship = false   # true = skip "no sponsorship" / "US citizenship required"
+categories = []               # e.g. ["software", "ai", "quant"]
+                              # (categories: Software, AI/ML/Data, Hardware, Product, Quant)
+title_keywords = []           # only titles containing one of these, e.g. ["software", "data"]
+exclude_keywords = []         # skip titles containing any of these, e.g. ["phd", "mba"]
+location_keywords = []        # narrow further, e.g. ["ny", "nyc", "remote", "seattle"]
+max_age_days = 14             # ignore postings older than this
+max_per_run = 40              # cap cards per feed per run; extras get a one-line summary
+
+
+# ---- Feeds. Each one is announced with its own header in Discord.
+# webhook = name of the GitHub secret to post to. If that secret doesn't exist,
+# it falls back to DISCORD_WEBHOOK_URL, so a single channel works out of the box.
+
+[[feeds]]
+name = "Summer 2027 internships"
+emoji = "☀️"
+url = "https://raw.githubusercontent.com/SimplifyJobs/Summer2027-Internships/dev/.github/scripts/listings.json"
+link = "https://github.com/SimplifyJobs/Summer2027-Internships"
+readme = "https://raw.githubusercontent.com/SimplifyJobs/Summer2027-Internships/dev/README.md"
+terms = ["summer 2027"]
+include_no_term = false       # only matters if only_in_readme = false: true = also roles
+                              # with no season tagged ("N/A"), ~30/day, hidden by the README
+webhook = "DISCORD_WEBHOOK_URL"
+
+[[feeds]]
+name = "Off-season internships"
+emoji = "🍂"
+url = "https://raw.githubusercontent.com/SimplifyJobs/Summer2027-Internships/dev/.github/scripts/listings.json"
+link = "https://github.com/SimplifyJobs/Summer2027-Internships/blob/dev/README-Off-Season.md"
+readme = "https://raw.githubusercontent.com/SimplifyJobs/Summer2027-Internships/dev/README-Off-Season.md"
+terms = ["fall", "winter", "spring"]
+webhook = "DISCORD_WEBHOOK_URL_OFFSEASON"
+
+[[feeds]]
+name = "New grad roles"
+emoji = "🎓"
+url = "https://raw.githubusercontent.com/SimplifyJobs/New-Grad-Positions/dev/.github/scripts/listings.json"
+link = "https://github.com/SimplifyJobs/New-Grad-Positions"
+readme = "https://raw.githubusercontent.com/SimplifyJobs/New-Grad-Positions/dev/README.md"
+terms = []                    # new-grad listings have no season
+webhook = "DISCORD_WEBHOOK_URL_NEWGRAD"

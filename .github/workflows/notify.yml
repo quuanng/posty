@@ -22,18 +22,11 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     env:
+      # Filters live in config.toml - this block is only secrets.
       DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-
-      # ---------- your filters (comma-separated, case-insensitive) ----------
-      TERMS: "Summer 2027"            # blank = any term (incl. off-season)
-      CATEGORIES: ""                  # e.g. "software,ai,quant"; blank = all
-      TITLE_KEYWORDS: ""              # e.g. "software,machine learning,data"
-      EXCLUDE_KEYWORDS: ""            # e.g. "phd,mba,sales"
-      LOCATION_KEYWORDS: ""           # e.g. "remote,ny,seattle,ca"
-      HIDE_NO_SPONSORSHIP: "false"    # "true" to skip no-sponsorship / citizenship-only roles
-      MAX_AGE_DAYS: "14"
-      MAX_PER_RUN: "40"
-      # ----------------------------------------------------------------------
+      # Optional: separate channels. Leave the secrets unset to use the one above.
+      DISCORD_WEBHOOK_URL_OFFSEASON: ${{ secrets.DISCORD_WEBHOOK_URL_OFFSEASON }}
+      DISCORD_WEBHOOK_URL_NEWGRAD: ${{ secrets.DISCORD_WEBHOOK_URL_NEWGRAD }}
 
     steps:
       - uses: actions/checkout@v4

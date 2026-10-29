@@ -1,45 +1,51 @@
 #!/usr/bin/env python3
 """
-Internship notifier: polls SimplifyJobs/Summer2027-Internships and posts
-newly added listings to a Discord channel via webhook.
+Internship notifier: polls SimplifyJobs listing repos and posts newly added
+roles to Discord via webhook. Settings live in config.toml.
 
-Standard library only - no pip install needed.
+Standard library only (Python 3.11+ for tomllib) - no pip install needed.
 
-Config comes from environment variables (set them in the workflow file):
-  DISCORD_WEBHOOK_URL  required (store as a GitHub secret, never in code)
-  TERMS                comma list, e.g. "Summer 2027"            (blank = any)
-  CATEGORIES           comma list of keywords, e.g. "software,ai,quant"
-                       matched against category, case-insensitive (blank = all)
-  TITLE_KEYWORDS       only notify if title contains one of these (blank = any)
-  EXCLUDE_KEYWORDS     skip if title contains any of these       (blank = none)
-  LOCATION_KEYWORDS    only notify if a location contains one of these
-                       (blank = any), e.g. "remote,ny,ca,seattle"
-  HIDE_NO_SPONSORSHIP  "true" to skip roles that don't sponsor / need US citizenship
-  MAX_AGE_DAYS         ignore listings posted more than N days ago (default 14)
-  MAX_PER_RUN          cap on cards per run; extras are summarised (default 40)
+Secrets (environment variables, set as GitHub repository secrets):
+  DISCORD_WEBHOOK_URL            required; default channel for every feed
+  DISCORD_WEBHOOK_URL_OFFSEASON  optional; separate channel for off-season
+  DISCORD_WEBHOOK_URL_NEWGRAD    optional; separate channel for new grad
 
 CLI flags:
   --dry-run            print what would be sent; don't post or save state
-  --file PATH          read listings from a local file instead of GitHub
-  --test               send a single test message to Discord and exit
+  --file URL=PATH      use a local file for a source URL (repeatable; testing)
+  --test               send a test message to each feed's channel and exit
 """
 import argparse
+import html
 import json
 import os
 import re
 import sys
 import time
+import tomllib
 import urllib.error
 import urllib.request
 from datetime import datetime, timezone
 
-LISTINGS_URL = (
-    "https://raw.githubusercontent.com/SimplifyJobs/Summer2027-Internships/"
-    "dev/.github/scripts/listings.json"
-)
-REPO_URL = "https://github.com/SimplifyJobs/Summer2027-Internships"
-STATE_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "state.json")
-USER_AGENT = "internship-notifier/1.0"
+HERE = os.path.dirname(os.path.abspath(__file__))
+CONFIG_FILE = os.path.join(HERE, "config.toml")
+STATE_FILE = os.path.join(HERE, "state.json")
+USER_AGENT = "internship-notifier/2.0"
+DEFAULT_WEBHOOK_ENV = "DISCORD_WEBHOOK_URL"
+
+FILTER_DEFAULTS = {
+    "us_only": True,
+    "hide_no_sponsorship": False,
+    "categories": [],
+    "terms": [],
+    "include_no_term": False,
+    "title_keywords": [],
+    "exclude_keywords": [],
+    "location_keywords": [],
+    "max_age_days": 14,
+    "max_per_run": 40,
+    "only_in_readme": True,
+}
 
 CATEGORY_COLORS = {  # Discord embed side-bar colours
     "software": 0x5865F2,
@@ -53,36 +59,42 @@ CATEGORY_COLORS = {  # Discord embed side-bar colours
 
 # ---------------------------------------------------------------- config ---
 
-def env_list(name):
-    raw = os.environ.get(name, "")
-    return [p.strip().lower() for p in raw.split(",") if p.strip()]
-
-
 def load_config():
-    return {
-        "webhook": os.environ.get("DISCORD_WEBHOOK_URL", "").strip(),
-        "terms": env_list("TERMS"),
-        "categories": env_list("CATEGORIES"),
-        "title_keywords": env_list("TITLE_KEYWORDS"),
-        "exclude_keywords": env_list("EXCLUDE_KEYWORDS"),
-        "location_keywords": env_list("LOCATION_KEYWORDS"),
-        "hide_no_sponsorship": os.environ.get("HIDE_NO_SPONSORSHIP", "").lower() == "true",
-        "max_age_days": float(os.environ.get("MAX_AGE_DAYS") or 14),
-        "max_per_run": int(os.environ.get("MAX_PER_RUN") or 40),
-    }
+    with open(CONFIG_FILE, "rb") as f:
+        raw = tomllib.load(f)
+    shared = {k: raw.get(k, v) for k, v in FILTER_DEFAULTS.items()}
+    feeds = []
+    for fd in raw.get("feeds", []):
+        feed = {**shared, **fd}
+        for key in ("terms", "categories", "title_keywords",
+                    "exclude_keywords", "location_keywords"):
+            feed[key] = [str(s).strip().lower() for s in feed.get(key) or [] if str(s).strip()]
+        feed.setdefault("emoji", "🆕")
+        feed.setdefault("link", "")
+        feed["webhook_url"] = (os.environ.get(feed.get("webhook") or DEFAULT_WEBHOOK_ENV, "").strip()
+                               or os.environ.get(DEFAULT_WEBHOOK_ENV, "").strip())
+        feeds.append(feed)
+    if not feeds:
+        sys.exit("config.toml has no [[feeds]].")
+    return feeds
 
 
 # ----------------------------------------------------------------- state ---
+# {"sources": {url: {"etag": str|None, "seen": [ids]}}, "seeded": [feed names]}
 
 def load_state():
-    if not os.path.exists(STATE_FILE):
-        return None
-    with open(STATE_FILE) as f:
-        return json.load(f)
+    if os.path.exists(STATE_FILE):
+        with open(STATE_FILE) as f:
+            state = json.load(f)
+        if "sources" in state:
+            return state
+    return {"sources": {}, "seeded": []}
 
 
 def save_state(state):
-    state["seen"] = sorted(set(state["seen"]))
+    for src in state["sources"].values():
+        src["seen"] = sorted(set(src["seen"]))
+    state["seeded"] = sorted(set(state["seeded"]))
     with open(STATE_FILE, "w") as f:
         json.dump(state, f, indent=0)
         f.write("\n")
@@ -90,19 +102,76 @@ def save_state(state):
 
 # ----------------------------------------------------------------- fetch ---
 
-def fetch_listings(etag=None):
-    """Returns (listings or None if unchanged, new_etag)."""
+def fetch_listings(url, etag=None):
+    """Returns (listings or None if unchanged, etag)."""
     headers = {"User-Agent": USER_AGENT}
     if etag:
         headers["If-None-Match"] = etag
-    req = urllib.request.Request(LISTINGS_URL, headers=headers)
+    req = urllib.request.Request(url, headers=headers)
     try:
-        with urllib.request.urlopen(req, timeout=60) as resp:
+        with urllib.request.urlopen(req, timeout=90) as resp:
             return json.load(resp), resp.headers.get("ETag")
     except urllib.error.HTTPError as e:
         if e.code == 304:
             return None, etag
         raise
+
+
+_readme_cache = {}
+
+
+def fetch_readme(url):
+    """Raw README text (HTML entities decoded), cached for this run."""
+    if url not in _readme_cache:
+        req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
+        with urllib.request.urlopen(req, timeout=90) as resp:
+            _readme_cache[url] = html.unescape(resp.read().decode("utf-8", "replace"))
+    return _readme_cache[url]
+
+
+def in_readme(item, readme_text):
+    # Each README row links to simplify.jobs/p/<id>; fall back to the apply URL.
+    return item["id"] in readme_text or (item.get("url") and item["url"] in readme_text)
+
+
+# ------------------------------------------------------------- locations ---
+
+US_STATE_CODES = set(
+    "AL AK AZ AR CA CO CT DE FL GA HI ID IL IN IA KS KY LA ME MD MA MI MN MS MO MT "
+    "NE NV NH NJ NM NY NC ND OH OK OR PA RI SC SD TN TX UT VT VA WA WV WI WY DC PR".split()
+)
+US_STATE_NAMES = {s.lower() for s in (
+    "Alabama,Alaska,Arizona,Arkansas,California,Colorado,Connecticut,Delaware,Florida,"
+    "Georgia,Hawaii,Idaho,Illinois,Indiana,Iowa,Kansas,Kentucky,Louisiana,Maine,Maryland,"
+    "Massachusetts,Michigan,Minnesota,Mississippi,Missouri,Montana,Nebraska,Nevada,"
+    "New Hampshire,New Jersey,New Mexico,New York,North Carolina,North Dakota,Ohio,Oklahoma,"
+    "Oregon,Pennsylvania,Rhode Island,South Carolina,South Dakota,Tennessee,Texas,Utah,"
+    "Vermont,Virginia,Washington,West Virginia,Wisconsin,Wyoming,District of Columbia,"
+    "Puerto Rico").split(",")}
+US_ALIASES = {"nyc", "sf", "la", "south sf", "dc", "us", "u.s", "usa", "united states"}
+NO_COUNTRY_WORDS = ("remote", "hybrid", "multiple", "anywhere", "various", "nationwide")
+
+
+def is_us_location(loc):
+    """True for US locations and for ones that name no country at all (e.g.
+    "Remote"). False for anything clearly abroad (", UK", ", Canada",
+    "Remote in Germany", "Singapore", ...)."""
+    s = loc.strip().rstrip(".")
+    low = s.lower()
+    if low in US_ALIASES or low in US_STATE_NAMES or s in US_STATE_CODES:
+        return True
+    if re.search(r"\b(usa|united states|u\.s\.)", low):
+        return True
+    m = re.search(r"[,.]\s*([A-Z]{2})$", s)  # "City, ST" (also typo'd "City. ST")
+    if m and m.group(1) in US_STATE_CODES:
+        return True
+    parts = [p.strip() for p in s.split(",")]
+    if len(parts) >= 2:  # "City, ON, Canada" / "London, UK" / "Manhattan, NYC"
+        last = parts[-1].lower()
+        return last in US_STATE_NAMES or last in US_ALIASES
+    if low.startswith("remote in "):
+        return False
+    return any(w in low for w in NO_COUNTRY_WORDS)
 
 
 # ---------------------------------------------------------------- filter ---
@@ -120,37 +189,46 @@ def contains_any(text, keywords):
     return False
 
 
-def is_eligible(item, cfg, now):
+def is_eligible(item, f, now):
     if not item.get("active") or not item.get("is_visible"):
         return False
-    if cfg["terms"] and not any(contains_any(t, cfg["terms"]) for t in item.get("terms") or []):
-        return False
-    if cfg["categories"] and not contains_any(item.get("category"), cfg["categories"]):
+    terms = [t for t in item.get("terms") or [] if t and t.upper() != "N/A"]
+    if f["terms"]:
+        if terms:
+            if not any(contains_any(t, f["terms"]) for t in terms):
+                return False
+        elif not f["include_no_term"]:
+            return False
+    if f["categories"] and not contains_any(item.get("category"), f["categories"]):
         return False
     title = item.get("title", "")
-    if cfg["title_keywords"] and not contains_any(title, cfg["title_keywords"]):
+    if f["title_keywords"] and not contains_any(title, f["title_keywords"]):
         return False
-    if cfg["exclude_keywords"] and contains_any(title, cfg["exclude_keywords"]):
+    if f["exclude_keywords"] and contains_any(title, f["exclude_keywords"]):
         return False
     locs = item.get("locations") or []
-    if cfg["location_keywords"] and not any(contains_any(l, cfg["location_keywords"]) for l in locs):
+    if f["us_only"] and locs and not any(is_us_location(l) for l in locs):
         return False
-    if cfg["hide_no_sponsorship"] and item.get("sponsorship") in (
+    if f["location_keywords"] and not any(contains_any(l, f["location_keywords"]) for l in locs):
+        return False
+    if f["hide_no_sponsorship"] and item.get("sponsorship") in (
         "Does Not Offer Sponsorship", "U.S. Citizenship is Required"
     ):
         return False
     posted = item.get("date_posted") or 0
-    if cfg["max_age_days"] > 0 and now - posted > cfg["max_age_days"] * 86400:
+    if f["max_age_days"] > 0 and now - posted > f["max_age_days"] * 86400:
         return False
     return True
 
 
 # --------------------------------------------------------------- discord ---
 
-def build_embed(item):
+def build_embed(item, feed):
     category = item.get("category") or ""
     color = next((c for k, c in CATEGORY_COLORS.items() if k in category.lower()), 0x99AAB5)
     locs = item.get("locations") or []
+    if feed["us_only"]:  # show US locations first
+        locs = sorted(locs, key=lambda l: not is_us_location(l))
     loc_text = ", ".join(locs[:4]) + (f" +{len(locs) - 4} more" if len(locs) > 4 else "")
     fields = [
         {"name": "Location", "value": (loc_text or "—")[:1024], "inline": True},
@@ -159,12 +237,13 @@ def build_embed(item):
     sponsorship = item.get("sponsorship")
     if sponsorship and sponsorship != "Other":
         fields.append({"name": "Sponsorship", "value": sponsorship, "inline": True})
+    terms = [t for t in item.get("terms") or [] if t and t.upper() != "N/A"]
     embed = {
         "title": f"{item.get('company_name', '?')} — {item.get('title', '?')}"[:256],
-        "url": item.get("url") or REPO_URL,
+        "url": item.get("url") or feed["link"] or None,
         "color": color,
         "fields": fields,
-        "footer": {"text": ", ".join(item.get("terms") or [])},
+        "footer": {"text": ", ".join(terms) or feed["name"]},
     }
     if item.get("date_posted"):
         embed["timestamp"] = datetime.fromtimestamp(item["date_posted"], timezone.utc).isoformat()
@@ -173,7 +252,7 @@ def build_embed(item):
 
 def post_discord(webhook, payload, retries=3):
     data = json.dumps(payload).encode()
-    for attempt in range(retries):
+    for _ in range(retries):
         req = urllib.request.Request(
             webhook, data=data, method="POST",
             headers={"Content-Type": "application/json", "User-Agent": USER_AGENT},
@@ -195,37 +274,36 @@ def post_discord(webhook, payload, retries=3):
     return False
 
 
-def send_listings(webhook, items, dry_run):
-    """Send cards in batches of 10 (Discord's per-message limit).
-    Returns the ids that were delivered."""
-    delivered = []
-    for i in range(0, len(items), 10):
-        batch = items[i:i + 10]
-        n = len(items)
-        payload = {
-            "embeds": [build_embed(x) for x in batch],
-            "allowed_mentions": {"parse": []},
-        }
-        if i == 0:
-            payload["content"] = f"🆕 **{n} new internship{'s' if n != 1 else ''}**"
-        if dry_run:
-            for e in payload["embeds"]:
-                print(f"  • {e['title']}  [{e['fields'][0]['value']}]  {e['url']}")
-            delivered += [x["id"] for x in batch]
-            continue
-        if post_discord(webhook, payload):
-            delivered += [x["id"] for x in batch]
-        else:
-            break  # stop; undelivered ones are retried next run
-        time.sleep(1)
-    return delivered
-
-
 def send_text(webhook, text, dry_run):
     if dry_run:
-        print(text)
+        print("  " + text)
         return True
     return post_discord(webhook, {"content": text, "allowed_mentions": {"parse": []}})
+
+
+def send_listings(feed, items, dry_run):
+    """Post cards in batches of 10 (Discord's per-message limit).
+    Returns ids that were delivered."""
+    delivered = []
+    n = len(items)
+    for i in range(0, n, 10):
+        batch = items[i:i + 10]
+        payload = {"embeds": [build_embed(x, feed) for x in batch],
+                   "allowed_mentions": {"parse": []}}
+        if i == 0:
+            payload["content"] = f"{feed['emoji']} **{feed['name']}** · {n} new"
+        if dry_run:
+            if i == 0:
+                print("  " + payload["content"])
+            for e in payload["embeds"]:
+                print(f"    • {e['title']}  [{e['fields'][0]['value']}]")
+            delivered += [x["id"] for x in batch]
+            continue
+        if not post_discord(feed["webhook_url"], payload):
+            break  # stop; undelivered ones are retried next run
+        delivered += [x["id"] for x in batch]
+        time.sleep(1)
+    return delivered
 
 
 # ------------------------------------------------------------------ main ---
@@ -233,64 +311,91 @@ def send_text(webhook, text, dry_run):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--dry-run", action="store_true")
-    ap.add_argument("--file")
+    ap.add_argument("--file", action="append", default=[], metavar="URL=PATH")
     ap.add_argument("--test", action="store_true")
     args = ap.parse_args()
+    local_files = dict(s.split("=", 1) for s in args.file)
 
-    cfg = load_config()
-    if not cfg["webhook"] and not args.dry_run:
-        sys.exit("DISCORD_WEBHOOK_URL is not set (add it as a repository secret).")
+    feeds = load_config()
+    if not args.dry_run:
+        missing = [f["name"] for f in feeds if not f["webhook_url"]]
+        if missing:
+            sys.exit("DISCORD_WEBHOOK_URL is not set (add it as a repository secret).")
 
     if args.test:
-        ok = send_text(cfg["webhook"], "✅ Internship notifier test message — webhook works!", args.dry_run)
+        ok = True
+        for webhook in dict.fromkeys(f["webhook_url"] for f in feeds):
+            names = ", ".join(f["name"] for f in feeds if f["webhook_url"] == webhook)
+            ok &= send_text(webhook, f"✅ Test message — this channel will get: {names}", args.dry_run)
         sys.exit(0 if ok else 1)
 
     state = load_state()
-    first_run = state is None
-    if first_run:
-        state = {"seen": [], "etag": None}
-
-    if args.file:
-        with open(args.file) as f:
-            listings, etag = json.load(f), None
-    else:
-        listings, etag = fetch_listings(None if first_run else state.get("etag"))
-        if listings is None:
-            print("listings.json unchanged since last run.")
-            return
-
     now = time.time()
-    seen = set(state["seen"])
-    eligible = [x for x in listings if x.get("id") and is_eligible(x, cfg, now)]
-    new = [x for x in eligible if x["id"] not in seen]
-    new.sort(key=lambda x: x.get("date_posted") or 0)
-    print(f"{len(listings)} listings, {len(eligible)} match filters, {len(new)} new.")
+    seeded = set(state["seeded"])
 
-    if first_run:
-        # Seed silently so we don't blast hundreds of existing roles at you.
-        seen.update(x["id"] for x in eligible)
-        send_text(
-            cfg["webhook"],
-            f"👋 Internship notifier is set up. Watching {len(eligible)} current "
-            f"matching roles — you'll get a message here when new ones appear.",
-            args.dry_run,
-        )
-    elif new:
-        to_send, overflow = new[-cfg["max_per_run"]:], new[:-cfg["max_per_run"]]
-        delivered = send_listings(cfg["webhook"], to_send, args.dry_run)
-        seen.update(delivered)
-        if overflow:
-            seen.update(x["id"] for x in overflow)
-            send_text(
-                cfg["webhook"],
-                f"…and {len(overflow)} more older new listings. Full list: <{REPO_URL}>",
-                args.dry_run,
-            )
+    # Group feeds by source so each file is downloaded once per run.
+    by_url = {}
+    for f in feeds:
+        by_url.setdefault(f["url"], []).append(f)
 
-    # Forget ids that no longer exist upstream so state.json stays small.
-    live_ids = {x.get("id") for x in listings}
-    state["seen"] = [i for i in seen if i in live_ids]
-    state["etag"] = etag
+    for url, url_feeds in by_url.items():
+        src = state["sources"].setdefault(url, {"etag": None, "seen": []})
+        needs_seed = any(f["name"] not in seeded for f in url_feeds)
+        if url in local_files:
+            with open(local_files[url]) as fh:
+                listings, etag = json.load(fh), None
+        else:
+            try:
+                listings, etag = fetch_listings(url, None if needs_seed else src["etag"])
+            except Exception as e:  # one bad source shouldn't stop the others
+                print(f"Could not fetch {url}: {e}", file=sys.stderr)
+                continue
+        if listings is None:
+            print(f"Unchanged: {url}")
+            continue
+
+        seen = set(src["seen"])
+        for feed in url_feeds:
+            readme_text = None
+            if feed["only_in_readme"] and feed.get("readme"):
+                try:
+                    readme_text = fetch_readme(feed["readme"])
+                except Exception as e:
+                    print(f"[{feed['name']}] could not fetch README, skipping: {e}", file=sys.stderr)
+                    continue
+            eligible = [x for x in listings if x.get("id") and is_eligible(x, feed, now)
+                        and (readme_text is None or in_readme(x, readme_text))]
+            new = sorted((x for x in eligible if x["id"] not in seen),
+                         key=lambda x: x.get("date_posted") or 0)
+            print(f"[{feed['name']}] {len(eligible)} match filters, {len(new)} new")
+
+            if feed["name"] not in seeded:
+                # First run for this feed: record what exists without spamming.
+                seen.update(x["id"] for x in eligible)
+                seeded.add(feed["name"])
+                send_text(feed["webhook_url"],
+                          f"👋 Now watching **{feed['name']}** "
+                          f"({len(eligible)} current matches). New ones will show up here.",
+                          args.dry_run)
+                continue
+            if not new:
+                continue
+            cap = max(1, int(feed["max_per_run"]))
+            to_send, overflow = new[-cap:], new[:-cap]
+            seen.update(send_listings(feed, to_send, args.dry_run))
+            if overflow:
+                seen.update(x["id"] for x in overflow)
+                send_text(feed["webhook_url"],
+                          f"…and {len(overflow)} more new {feed['name']}. Full list: <{feed['link']}>",
+                          args.dry_run)
+
+        # A role matching two feeds (e.g. Summer + Winter) is only sent once,
+        # because feeds sharing a source share this seen-set.
+        live = {x.get("id") for x in listings}
+        src["seen"] = [i for i in seen if i in live]
+        src["etag"] = etag
+
+    state["seeded"] = list(seeded)
     if args.dry_run:
         print("(dry run - state not saved)")
     else:
