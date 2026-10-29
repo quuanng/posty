@@ -6,7 +6,7 @@
 
 # ---- Filters that apply to every feed (a feed below can override any of them)
 
-only_in_readme = true         # notify only for roles actually shown in the repo's README
+only_in_readme = false         # notify only for roles actually shown in the repo's README
                               # (what you see on GitHub). false = everything in Simplify's
                               # data file, which has ~5x more new-grad roles (less curated)
                               # and internship roles with no season tagged.
