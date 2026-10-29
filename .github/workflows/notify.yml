@@ -1,4 +1,4 @@
-name: Internship notifier
+name: posty
 
 on:
   schedule:
