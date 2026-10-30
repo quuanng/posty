@@ -18,8 +18,8 @@ categories = []               # e.g. ["software", "ai", "quant"]
 title_keywords = []           # only titles containing one of these, e.g. ["software", "data"]
 exclude_keywords = []         # skip titles containing any of these, e.g. ["phd", "mba"]
 location_keywords = []        # narrow further, e.g. ["ny", "nyc", "remote", "seattle"]
-max_age_days = 14             # ignore postings older than this
-max_per_run = 40              # cap cards per feed per run; extras get a one-line summary
+max_age_days = 2              # ignore postings older than this
+max_per_run = 100             # cap cards per feed per run; extras get a one-line summary
 
 
 # ---- Feeds. Each one is announced with its own header in Discord.
