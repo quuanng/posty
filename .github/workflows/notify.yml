@@ -2,7 +2,7 @@ name: posty
 
 on:
   schedule:
-    - cron: "*/12 * * * *"     # every 12 min
+    - cron: "4 4 * * *"     
   workflow_dispatch:          # lets you click "Run workflow" manually
     inputs:
       test:
