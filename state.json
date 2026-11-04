@@ -1,7 +1,7 @@
 {
 "sources": {
 "https://raw.githubusercontent.com/SimplifyJobs/Summer2027-Internships/dev/.github/scripts/listings.json": {
-"etag": "\"87d32b0da01d83223248c56262a1f74d049440ef9375311c87bf21f326d37e88\"",
+"etag": "\"6a237bb0c6a2cc92778c4f9bd1e1b576b1f8a8fd68a10067ac92766945fabdf2\"",
 "seen": [
 "00e04eac-1e56-4e4d-ad08-1472c68a0683",
 "0146b19d-d59d-4b99-8b14-b713eb4e1adf",
@@ -92,6 +92,7 @@
 "20e281dd-0588-4bfa-9acf-46211e876ce9",
 "219c4e1f-7e7a-4ed5-8be3-1afd2b7b5444",
 "21c18eb8-3afc-47cf-8cb6-7ee1838386b5",
+"2241ec96-bc3b-4561-b94a-4e27e020422c",
 "22af9ee1-e73d-418a-9466-c9b7baa84044",
 "230b2e34-559a-447a-a712-6fe2661159c2",
 "23198c94-9b16-48f0-9708-09ccb2a77fa9",
@@ -137,6 +138,7 @@
 "2e842956-0ea1-4be0-a894-cea7625f9567",
 "2f4044bd-36a6-4537-a63e-6dbebb99c1ce",
 "2f956c52-edf6-4b68-99c9-7db4d96de3c0",
+"2f96e3d6-e7b7-4c8f-ac5d-832fdca16735",
 "300bff18-a855-45ba-a091-cac4b99a1e29",
 "305f85d5-4a7e-488b-849e-5804911af318",
 "3095dc51-647e-45c6-8c95-5791bcf93583",
@@ -307,6 +309,7 @@
 "70bea471-fa1c-418c-b745-61bc60d14244",
 "7103d806-4eb2-4d9a-9d3d-14938fbaffa2",
 "711d6384-7fdd-499a-b385-531aa8968393",
+"715edfbe-9e25-4d5c-b17b-230a7cd1efa2",
 "72123431-9529-44b4-9759-2f70269f9383",
 "72b84b99-961c-410b-82fa-bc8a5b4ce126",
 "73205f44-451a-4bd5-add5-2cba415a4dbf",
@@ -322,6 +325,7 @@
 "76f81261-3cc0-45e5-938b-cc7d06c83756",
 "788484cf-8d3d-4fb3-82c6-3b5c16072344",
 "78f2f6fd-9234-4b7c-a26c-189023b24ca7",
+"792c0825-337f-4b99-aa3f-bf1c72df18ac",
 "79477bc2-76a3-4678-90ed-8684e8e45c02",
 "79843752-f9b8-4cb9-8ddd-379c0fa9fc96",
 "79f3969b-886f-4281-9e1a-926e475353e8",
@@ -684,6 +688,7 @@
 "f9f2c39b-cbd9-4654-bfd9-2ff0ac221771",
 "fb36388c-fce3-49f5-963a-d378871c96c3",
 "fb38e938-a410-4c0d-8933-595419ce7ac4",
+"fb3b0be5-05d3-471f-8734-bfaa6cfe7c70",
 "fb4ff940-a824-4d20-bce3-e3331a46768e",
 "fb5e4fde-4410-46d0-b5e9-cb2173cef2e3",
 "fb7af37d-726a-4276-9e06-b684a50edd38",
@@ -699,7 +704,7 @@
 ]
 },
 "https://raw.githubusercontent.com/SimplifyJobs/New-Grad-Positions/dev/.github/scripts/listings.json": {
-"etag": "\"515f6349d2bdd58d6042e42d602c61180bdc63b09db1a226be200d73c67c76e0\"",
+"etag": "\"0a0d3147b12166835a31563289fa4be6501370840a99c1c0e7e2c77332df68d6\"",
 "seen": [
 "00541c11-5082-412d-b278-829473505007",
 "007dcff7-02c1-4bd8-bc8b-a194434974bc",
