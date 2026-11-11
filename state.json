@@ -1,7 +1,7 @@
 {
 "sources": {
 "https://raw.githubusercontent.com/SimplifyJobs/Summer2027-Internships/dev/.github/scripts/listings.json": {
-"etag": "\"d8d37f809a2125fe0cd411e112889f756cca48f735c2b5c3636c67a0df8800b1\"",
+"etag": "\"2e548f026eaae617be4a15dd21b531c2d1791486dbdec73a036acdfa2816e535\"",
 "seen": [
 "000d33ac-e9e5-467f-bca9-5f233205ca83",
 "00e04eac-1e56-4e4d-ad08-1472c68a0683",
@@ -360,6 +360,7 @@
 "5c521dde-6882-44c5-89a3-a3da7f852020",
 "5d4a2e1b-0381-4b6d-bcf8-601636e1a627",
 "5d80b793-a83d-4b0f-abd7-0869dda444b9",
+"5dc1cb01-b65f-4d85-b792-b235ef4fa95b",
 "5dcd55ac-c7f2-47c8-9bb8-4b2a6c16a6b9",
 "5e01c887-e95d-4785-9a00-436d4da36038",
 "5e2455ca-73c8-4bfd-9d70-6b4448df0653",
@@ -789,6 +790,7 @@
 "cb472a4d-abf7-424b-8a9b-bb782e1f01c8",
 "cb700108-bc57-4040-b83c-73777ded135f",
 "cba0ad46-a125-46b1-83ce-70159c39feea",
+"cbf0ae78-7117-4952-b05e-ab26f07e9803",
 "cc38967c-108b-401b-9f3d-10d4b77e349d",
 "ccd783d4-b8da-44c9-93bd-529368e9b01c",
 "cd4de95f-f5ac-42d3-a41f-91aae3438968",
@@ -1004,7 +1006,7 @@
 ]
 },
 "https://raw.githubusercontent.com/SimplifyJobs/New-Grad-Positions/dev/.github/scripts/listings.json": {
-"etag": "\"37cb3210d4762c4eed53c6ca5a0a54d067d99457885e2afdbf14e7e233d9d440\"",
+"etag": "\"37ec2f9dbd59e3e53d334f3a53acedda016ce42c32bd922fc2784ad4494fde54\"",
 "seen": [
 "00541c11-5082-412d-b278-829473505007",
 "007dcff7-02c1-4bd8-bc8b-a194434974bc",
@@ -1150,6 +1152,7 @@
 "42b75700-e206-494e-ba2b-407bea39df19",
 "43ad7250-0c4a-47c4-851f-9c4593930cd9",
 "43b8e015-cd30-4fd8-888c-7a2f618cb919",
+"43b8e348-e9a9-41b1-9c10-5bc2b4d1cbce",
 "4410c5c1-b6aa-4a86-af4c-c5ea5ee6b824",
 "4431f556-5dd2-40af-a033-fd9e11080647",
 "4517ade3-c19e-483b-8589-1506dbcf03c8",
@@ -1397,6 +1400,7 @@
 "b33c5a17-df42-4ff2-9e82-03b3e187c624",
 "b3968d77-3489-4bef-9ff3-acd12708ba23",
 "b4c2db2d-3859-453b-823e-8dc517020ce3",
+"b5d78578-847e-43f2-9ade-3b44ae95b38b",
 "b6726dc7-340b-4cf0-a326-13ab7d9f331d",
 "b6f8c62c-4d2c-44f5-8147-cca845fe05d3",
 "b78f0072-9140-443e-915e-a7ab2b4d2c0a",
@@ -1453,6 +1457,7 @@
 "d3e151bd-6a45-440f-837d-4292a0b202cb",
 "d4136527-95f3-42f5-beaf-aaf2f8948265",
 "d44746d7-c177-4559-9ee3-2777ba0c3986",
+"d456430e-26c6-4f0f-9034-ee47bfe3d1ab",
 "d4f972f5-8c4c-4a56-b1a5-6791a802e5ec",
 "d57ce697-9274-4176-85eb-5f6098fd3fc7",
 "d5910549-eb52-40ba-b088-80a45d6fe141",
@@ -1534,6 +1539,7 @@
 "fa9bca45-6096-477b-8e43-e57f827d1ca9",
 "facdc66b-349d-47ae-94f8-cfdd1ffdb70f",
 "fc7dea4f-3945-4de4-a630-62d74a3935a3",
+"fc9a2814-e6ac-4198-a6bd-4f77d7941d78",
 "fcaec003-a477-4d4e-b991-22130da66945",
 "fcd88c67-d6d6-41a6-9f32-1b0db5954dd6",
 "fcd9aaed-c3f5-4dd0-b566-4de8799f7004",
