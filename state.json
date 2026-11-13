@@ -1,7 +1,7 @@
 {
 "sources": {
 "https://raw.githubusercontent.com/SimplifyJobs/Summer2027-Internships/dev/.github/scripts/listings.json": {
-"etag": "\"f48af39ea32b6eb688a74cd96f85097cc5d8626bc0e1844c0870099c205a5142\"",
+"etag": "\"299967ef59dcf58a9bd3b946baaa8459199b2fb1e46d096f9233d1ec0bc784fc\"",
 "seen": [
 "000d33ac-e9e5-467f-bca9-5f233205ca83",
 "00e04eac-1e56-4e4d-ad08-1472c68a0683",
@@ -1096,7 +1096,7 @@
 ]
 },
 "https://raw.githubusercontent.com/SimplifyJobs/New-Grad-Positions/dev/.github/scripts/listings.json": {
-"etag": "\"6584a750df6e4784f930e998e54580782bbd06b73519c47f8a778ee18c3f6bef\"",
+"etag": "\"c06c1f0a941603039d305761e92e146928ba0026a1bb4957df75fdd45bc6bd11\"",
 "seen": [
 "00541c11-5082-412d-b278-829473505007",
 "007dcff7-02c1-4bd8-bc8b-a194434974bc",
