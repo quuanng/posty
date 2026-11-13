@@ -1,7 +1,7 @@
 {
 "sources": {
 "https://raw.githubusercontent.com/SimplifyJobs/Summer2027-Internships/dev/.github/scripts/listings.json": {
-"etag": "\"bcd655a419aa929b61142486fdb1880b328ec42eb491e84263cfd92cfed4e146\"",
+"etag": "\"ffe0cbacee81e0a0838610d8d7ca97d9e301837378d6d09dbfd19c1c5cb288e2\"",
 "seen": [
 "000d33ac-e9e5-467f-bca9-5f233205ca83",
 "00e04eac-1e56-4e4d-ad08-1472c68a0683",
@@ -20,6 +20,7 @@
 "03dcc6a0-7074-41ed-b801-a60f6116f591",
 "044ee2f0-a8b5-474b-9c1d-bbb5611214d7",
 "046091a9-a6ce-44b7-9a9f-151534102afe",
+"0481fb67-c0ea-4fc5-b59c-316b5ffb6870",
 "05453c43-ed26-4599-99c7-54c6dc837e45",
 "0547ad20-dcaf-49bd-8437-7fc000825f41",
 "059f11e6-0de5-4f66-8a9b-e5b55f76393a",
@@ -140,6 +141,7 @@
 "230b2e34-559a-447a-a712-6fe2661159c2",
 "23198c94-9b16-48f0-9708-09ccb2a77fa9",
 "2340e846-c70c-49d0-b110-70c6e65ba5fa",
+"234a1357-b370-4f07-aa8b-2eebcdcd4464",
 "23a3d989-578b-45f2-9c26-fa183ae2e6d1",
 "2416143a-d182-47ca-9121-739744610d0a",
 "24381402-1346-48ef-9e6d-909cd81ca7d5",
@@ -327,6 +329,7 @@
 "4f0257bc-0588-4ab9-b230-b1111acb93ed",
 "4f786492-0f6e-4697-853b-f3fcdb446f60",
 "4fa09baa-9d2e-447f-a634-fa99e6a9201f",
+"4fe1b8d3-32c5-424c-84bf-74003c96c4bd",
 "5007bf51-0f41-454c-9a44-5031a3f369ab",
 "501df30d-2f76-4464-a3ec-500e952ced2d",
 "50c14a6a-77e0-4a0b-b4e2-55437b8bc32b",
@@ -756,6 +759,7 @@
 "b82c266b-358b-4cf2-b927-d7bda329770e",
 "b82ef27e-9f0e-4f70-a352-4c20f5888772",
 "b886be52-5989-4569-9fe1-b6d2d4e430cd",
+"b8ad3dc7-cf43-4e11-909c-85b6cf1d5722",
 "b8ebd7b8-bd94-4af7-8d80-9bdd6cfa8c52",
 "b902c791-736e-4a85-aca0-4e7636502de4",
 "b90323c9-0bc8-4283-aa0f-b384fce8003f",
@@ -783,6 +787,7 @@
 "be25948f-3dbe-43b8-8b4b-424a01d9b356",
 "be409c15-d7f8-4de9-a9eb-56f6fd1af705",
 "be4332c5-d83a-4a08-8665-0ca7425c43ad",
+"be6ad631-0dc1-427c-aaf1-88f8916fd4e9",
 "be8d5807-1506-4439-94ef-cbbc4820f02b",
 "be947cb8-0a95-43aa-bc3b-e77243d0e655",
 "bead51fa-aa91-421e-9b22-bc3e451072b1",
@@ -1083,7 +1088,7 @@
 ]
 },
 "https://raw.githubusercontent.com/SimplifyJobs/New-Grad-Positions/dev/.github/scripts/listings.json": {
-"etag": "\"27d37d2a2096d5be77c630c21cf89c5d74049a6bf1da7ea358ffb811ac0de549\"",
+"etag": "\"9adc0562293ffbb9cf381f09ad78f5d1c0bed73d72ea465bf84b5f224f336fc9\"",
 "seen": [
 "00541c11-5082-412d-b278-829473505007",
 "007dcff7-02c1-4bd8-bc8b-a194434974bc",
