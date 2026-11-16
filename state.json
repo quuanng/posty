@@ -1,7 +1,7 @@
 {
 "sources": {
 "https://raw.githubusercontent.com/SimplifyJobs/Summer2027-Internships/dev/.github/scripts/listings.json": {
-"etag": "\"827b9244a0303391f091d82c7390b3b96fd76d86f8c85acc004255060d63e204\"",
+"etag": "\"f3b003b17a026d78c650a611a4cfe35000c801951e66c70b17d51677faa56d8c\"",
 "seen": [
 "000d33ac-e9e5-467f-bca9-5f233205ca83",
 "00e04eac-1e56-4e4d-ad08-1472c68a0683",
@@ -107,6 +107,7 @@
 "18803ec8-f589-4545-bb91-2d5378346d55",
 "18cf7b99-7951-4d0b-aa42-6f2427d59c44",
 "1982a165-a74a-476f-8ebb-5136a38d056d",
+"198dcbe5-882a-40bd-9dc2-ea376522a837",
 "1993c458-75cd-45ce-b37e-7ce3a800bdab",
 "19e2c7d0-e3b3-4263-88fe-8756f1476060",
 "1a958480-016f-41ca-a1ad-fa20d33b115b",
@@ -256,6 +257,7 @@
 "3bb4fff0-d717-4d88-8569-a649bc5534b3",
 "3bb515cc-bf19-4065-84f7-a2267d491859",
 "3bc108c2-89c8-4ffa-b7e5-7f1482d1fd91",
+"3bf15637-dfa2-4883-80f9-32381f68a8d4",
 "3c1feb51-a55f-4a71-bbde-0564560f67e4",
 "3c780232-197d-4999-82a6-c1dc3d3ae1f7",
 "3ccd0b28-1c06-43f2-be85-1902e772f95b",
@@ -358,6 +360,7 @@
 "519aa545-7ad9-4720-9fc1-926b6e963038",
 "51e30f02-0f7a-463f-a7e9-bbd16abb42bc",
 "52db75c2-6c8b-48e4-96f9-924db21741b2",
+"531a491d-17f0-414b-bc44-c2fa4f3f8f09",
 "5354a143-5ec3-43a2-a801-bc2d80b6a8ec",
 "536e2f43-f2f0-47fd-aa1e-41a34bff5823",
 "540147a8-5c6b-4f1d-8311-8fce3c94c9de",
@@ -647,6 +650,7 @@
 "92ec723c-fb9a-4c9a-83de-c0dee7290812",
 "931408fb-5cb7-4179-8c33-35a242bbc266",
 "93157a2c-d04f-4785-b701-eb8a4beb6fd7",
+"93a09d2c-4c6c-48b4-b6d9-ab0a27a3951d",
 "93c70e55-fdf9-4720-a4f7-a7e8958e0a75",
 "93f840b3-e735-4ee5-8cbb-e007eafb977f",
 "941c5f3c-bdfe-418c-83e5-48d69272dcbe",
@@ -807,6 +811,7 @@
 "b9c363cf-6bfc-4b3b-b3c3-351dc07109fd",
 "b9ce969b-feac-4712-867d-4dc584234d94",
 "ba0364a9-1ac6-476c-bce0-118895d7a5ed",
+"ba118afe-7991-4a5a-87c7-f68325d9f99d",
 "ba1f1bc5-e94b-415b-84c8-61a6c4affb8b",
 "ba35c253-36e9-4541-be80-6b3558722e8f",
 "ba6baa73-28e0-4b0f-b45d-543363c573e1",
@@ -874,6 +879,7 @@
 "c822b6e8-081c-4db0-94b6-8425ce02c277",
 "c83bdc1d-5eb0-41f6-a236-0a2822d82b7b",
 "c86c9881-be39-476e-bd6e-cea47d90c1c4",
+"c8718487-1c23-48cb-9c04-3d4d44bc977b",
 "c87cc8c3-da35-4f50-9ee0-cc9cac12c4b0",
 "c890b3c3-40a5-4b61-a4f8-1c635d53c234",
 "c917f0bc-a8d2-4468-ad7c-573f62b007bd",
@@ -922,6 +928,7 @@
 "d3f18227-f5d5-44d9-b6c1-749707a2c9aa",
 "d479bef7-8f0d-4384-8b62-13d11f539acd",
 "d489989d-98b0-4876-852a-50e2caecd69b",
+"d48bdf87-b0ff-4edc-a9a5-5f5ecca2154c",
 "d4918514-6348-4f6f-8642-5a2c01ff7162",
 "d4989aa8-ab4d-4bc5-bb75-d9deaead306c",
 "d4aaacf7-470e-48ba-aa9e-059dc2d01890",
@@ -1139,7 +1146,7 @@
 ]
 },
 "https://raw.githubusercontent.com/SimplifyJobs/New-Grad-Positions/dev/.github/scripts/listings.json": {
-"etag": "\"9ee8de878eb88be756ccda804bf6d8806d42fe78e35a8f99bee6dc3cd6883395\"",
+"etag": "\"18ec7b90dd63f66325a0c34dd9385fa69ab58659efa8d7331bc41c100a1fc7fd\"",
 "seen": [
 "00541c11-5082-412d-b278-829473505007",
 "007dcff7-02c1-4bd8-bc8b-a194434974bc",
