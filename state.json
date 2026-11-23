@@ -1,7 +1,7 @@
 {
 "sources": {
 "https://raw.githubusercontent.com/SimplifyJobs/Summer2027-Internships/dev/.github/scripts/listings.json": {
-"etag": "\"47546ef2d389ec7da82179dea87ca05a343ede23b7ccc65c7b80a369c98c10fc\"",
+"etag": "\"429dd82c15a6ea078630af1dcd1decb7907539c531a3ec802ecbc4c4f679465a\"",
 "seen": [
 "000d33ac-e9e5-467f-bca9-5f233205ca83",
 "00b1c762-9ca4-4c23-afff-d070ee8279e6",
@@ -473,6 +473,7 @@
 "59c8e11d-c4c9-4e51-895d-4e7e5e98c975",
 "59cb6225-cdeb-44d2-b3c6-fa1ee98e4a67",
 "59e8bcfa-d272-4908-b44c-ffb7fa90719a",
+"5a0d7972-1370-47d6-bacf-3777c937018d",
 "5a41cc41-928a-4159-8876-72eabec8b8d9",
 "5a6710d9-eb37-4044-b352-2b23303dd73c",
 "5af709ff-5844-41ba-9742-d01a310bf9ce",
@@ -791,6 +792,7 @@
 "9857a37f-ddfe-474b-877b-894f4761b0d3",
 "986abdef-dc72-4aa6-a4da-fbbcadaadc49",
 "98921a30-96ec-4b77-b16f-55d21867f42f",
+"9894da93-252f-4667-9ffe-fea0d126c96b",
 "9899cc5e-cd33-4e2f-bb15-2a840111ad55",
 "98b8527c-743e-40c3-9e08-fd3c37c6e096",
 "9900f91a-63d4-4d30-9a08-b62d83e02fae",
@@ -1051,6 +1053,7 @@
 "c83bdc1d-5eb0-41f6-a236-0a2822d82b7b",
 "c86c9881-be39-476e-bd6e-cea47d90c1c4",
 "c8718487-1c23-48cb-9c04-3d4d44bc977b",
+"c8721b3d-1bb7-4fc0-9c22-09f70904d771",
 "c87cc8c3-da35-4f50-9ee0-cc9cac12c4b0",
 "c890b3c3-40a5-4b61-a4f8-1c635d53c234",
 "c917f0bc-a8d2-4468-ad7c-573f62b007bd",
@@ -1318,6 +1321,7 @@
 "f865a3d4-ed0b-49c0-89c5-e6ce47db6f5a",
 "f9299641-0cec-447d-8ed6-26445441d4ec",
 "f95a9943-a08d-468f-9a14-13f5b26ac3e3",
+"f991c7b0-97df-4f9d-a32d-33542afe619f",
 "f9ce3f9e-998b-4125-ae37-96cbe3936033",
 "f9d3638e-909b-4e1a-aac8-bf96a6846a05",
 "f9d36ef7-8b25-4124-a93e-859b264cd811",
@@ -1352,7 +1356,7 @@
 ]
 },
 "https://raw.githubusercontent.com/SimplifyJobs/New-Grad-Positions/dev/.github/scripts/listings.json": {
-"etag": "\"fc0cd570693e934638d7548bc85624b3636336de6c0ab095453b355704998d48\"",
+"etag": "\"776071700e2ff8a17066141b1a3d82cb8bd9fec342015f9667d081a5353902ba\"",
 "seen": [
 "00541c11-5082-412d-b278-829473505007",
 "007dcff7-02c1-4bd8-bc8b-a194434974bc",
@@ -1509,6 +1513,7 @@
 "3f1e39bd-ca4d-4c3c-a7eb-d986f4e70d2f",
 "3fa19032-9a60-4980-aa90-789e3fd58171",
 "40068b1c-1318-4f31-b141-aa63e3c51300",
+"4080c80c-d1ea-43e0-a258-493945bb1294",
 "40f1cb6d-ba5b-4991-8b2a-dd09c54f239a",
 "42593d18-326b-43f2-8773-a7f85e4fc45a",
 "42a5fac7-0071-4765-b2c3-be97276274af",
