@@ -1,9 +1,10 @@
 {
 "sources": {
 "https://raw.githubusercontent.com/SimplifyJobs/Summer2027-Internships/dev/.github/scripts/listings.json": {
-"etag": "\"12bbd7aa7bc7f6ae87be028c70a9ddbc2a1854dea5a37307f702ad3e1330e443\"",
+"etag": "\"eb7302a379688c6688c19c86f7ca69386ce4d65592fac547ccca6d574153b2f2\"",
 "seen": [
 "000d33ac-e9e5-467f-bca9-5f233205ca83",
+"00583741-1c69-4dd2-8d14-3641d868fd51",
 "00b1c762-9ca4-4c23-afff-d070ee8279e6",
 "00cd908d-fc5f-4712-97e8-b714c9ca0b11",
 "00e04eac-1e56-4e4d-ad08-1472c68a0683",
@@ -350,6 +351,7 @@
 "41415b92-15bf-4391-90e1-04a32e549fed",
 "4169c155-cad3-467e-b8f4-6435181c35ba",
 "41adf555-f919-4c50-a9ef-ba93383a1378",
+"423cda84-329b-4121-b2ca-e7f6f637cda7",
 "429206eb-1f40-45d7-b889-7f15adca52b5",
 "42bd2197-857c-4f16-9442-c07dc58c078a",
 "42c83536-2c93-4f65-bad9-24c556e1049d",
@@ -422,6 +424,7 @@
 "4e1d3eca-60ed-4189-856e-6f7c6a717741",
 "4e3e8dfe-e27e-41fe-a748-d6582600db35",
 "4e5f22da-1551-4dbf-a079-0c987a791f0d",
+"4e617c54-d8d6-419c-8227-7acd67ed01b7",
 "4f0257bc-0588-4ab9-b230-b1111acb93ed",
 "4f786492-0f6e-4697-853b-f3fcdb446f60",
 "4fa09baa-9d2e-447f-a634-fa99e6a9201f",
@@ -1029,6 +1032,7 @@
 "bee8e5de-03d0-4cf7-9457-e9ec51642c89",
 "bf045bbb-19b5-4bf0-a8de-2d2a06103832",
 "bf1ec0ef-494e-419c-abea-be20337732b0",
+"bfa1bf13-0025-4f44-84e6-abffbe40a90e",
 "bfbf3ca8-38df-48d8-9039-e1b886870dca",
 "bfc7b38a-bae3-4573-8b03-da5a8bbff0de",
 "bfd495aa-8461-4455-8885-5db271cd1cc0",
@@ -1398,7 +1402,7 @@
 ]
 },
 "https://raw.githubusercontent.com/SimplifyJobs/New-Grad-Positions/dev/.github/scripts/listings.json": {
-"etag": "\"4e30157534a9c203a5b69a668118e4c9f7ba760bd20526657a80afedc265f2e4\"",
+"etag": "\"2cac3f332e60ec5d5fc4c183b45171cf5d44ef746b7c4cbc2cdc282f1b444437\"",
 "seen": [
 "00541c11-5082-412d-b278-829473505007",
 "007dcff7-02c1-4bd8-bc8b-a194434974bc",
@@ -1923,6 +1927,7 @@
 "d7e1c685-49ab-4932-ade0-d310ad6e4261",
 "d840c912-8132-4067-918d-723702757692",
 "d8fc2aed-7724-4a66-999c-fadcd1da5162",
+"d9f3f34d-35aa-4d1f-833f-71728fed4a1d",
 "d9f83773-a7de-4a80-aae5-533beced44db",
 "da12b57e-2125-4564-b98f-7834918af83b",
 "da1ac264-d20e-4ad8-b630-709c0ae8cd5e",
