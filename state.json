@@ -1439,7 +1439,7 @@
 ]
 },
 "https://raw.githubusercontent.com/SimplifyJobs/New-Grad-Positions/dev/.github/scripts/listings.json": {
-"etag": "\"2699590e7182bce73dc32c1bbd17c0f01567202dddbf8e2103afb9167c692f1f\"",
+"etag": "\"c059fac065c918ddfa8878561cb3daa865f9725dd2dfa83df74170eb43c29125\"",
 "seen": [
 "00541c11-5082-412d-b278-829473505007",
 "007dcff7-02c1-4bd8-bc8b-a194434974bc",
@@ -1838,6 +1838,7 @@
 "9a6685e2-0aaf-400a-92b9-ec98a727cbf4",
 "9ab92ebe-2d68-49c3-9ab3-0fad2d7eae2e",
 "9b32e077-1014-4400-97fe-7645c3f3e997",
+"9c007171-49c7-45fe-ae89-8fbe69996d96",
 "9c419d63-e801-49ea-b32c-d22bcfcd2b97",
 "9c9ff27f-75fd-4c1b-b076-e687f7e08f74",
 "9dde75de-8bd2-42df-b91b-4f5294bc79c0",
@@ -1941,6 +1942,7 @@
 "cd99e89a-1d5f-4c16-96ba-8cb7f7ee8eec",
 "cdc35a24-ab55-44ca-90d3-c39986ed8c92",
 "ce244491-27f0-46a5-a5b8-76f1b4952100",
+"ce4b0306-3a42-44c1-8789-44f4d7ba9f45",
 "cea336b4-1147-402b-9c76-6b7ed2757eee",
 "ceafe55a-b038-4f84-97a8-40d747032438",
 "cfa9e9a7-7d54-4f72-ab81-1485d300ae55",
